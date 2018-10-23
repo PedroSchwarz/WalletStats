@@ -1,6 +1,7 @@
 package com.rodrigues.pedroschwarz.walletstats.activity;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -8,11 +9,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
@@ -20,6 +26,8 @@ import com.rodrigues.pedroschwarz.walletstats.R;
 import com.rodrigues.pedroschwarz.walletstats.activity.ExpenseActivity;
 import com.rodrigues.pedroschwarz.walletstats.activity.RevenueActivity;
 import com.rodrigues.pedroschwarz.walletstats.adapter.TransactionAdapter;
+import com.rodrigues.pedroschwarz.walletstats.helper.DatabaseHelper;
+import com.rodrigues.pedroschwarz.walletstats.helper.DateHelper;
 import com.rodrigues.pedroschwarz.walletstats.model.Transaction;
 
 import java.util.ArrayList;
@@ -32,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private MaterialCalendarView mainCal;
     private RecyclerView mainRv;
     private FloatingActionMenu mainFabMenu;
+    private TextView mainNoTrans;
+    private ProgressBar mainProg;
 
     private List<Transaction> transactions;
     private TransactionAdapter adapter;
@@ -48,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         mainFabMenu = findViewById(R.id.main_fab_menu);
         FloatingActionButton mainRFab = findViewById(R.id.main_r_fab);
         FloatingActionButton mainEFab = findViewById(R.id.main_e_fab);
+        mainNoTrans = findViewById(R.id.main_no_trans);
+        mainProg = findViewById(R.id.main_prog);
 
         mainRFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +81,34 @@ public class MainActivity extends AppCompatActivity {
         configCalendar();
     }
 
+    private void getTransactions(String date) {
+        if (transactions.isEmpty()) {
+            mainProg.setVisibility(View.VISIBLE);
+        }
+        DatabaseHelper.getTransactionRef(date)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                transactions.clear();
+                for (DocumentSnapshot snapshot : task.getResult()) {
+                    Transaction transaction = snapshot.toObject(Transaction.class);
+                    transactions.add(transaction);
+                }
+                updateUI();
+            }
+        });
+    }
+
+    private void updateUI() {
+        adapter.notifyDataSetChanged();
+        mainProg.setVisibility(View.GONE);
+        if (transactions.isEmpty()) {
+            mainNoTrans.setVisibility(View.VISIBLE);
+        } else {
+            mainNoTrans.setVisibility(View.GONE);
+        }
+    }
+
     private void configRecycler() {
         transactions = new ArrayList<>();
         adapter = new TransactionAdapter(transactions);
@@ -82,8 +122,9 @@ public class MainActivity extends AppCompatActivity {
         mainCal.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                mainNoTrans.setVisibility(View.GONE);
                 String d = String.valueOf(date.getMonth() + 1) + String.valueOf(date.getYear());
-                Toast.makeText(MainActivity.this, d, Toast.LENGTH_LONG).show();
+                getTransactions(d);
             }
         });
     }
@@ -96,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
     private void onGoAddExpense() {
         mainFabMenu.close(true);
         startActivity(new Intent(this, ExpenseActivity.class));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getTransactions(DateHelper.getDateKey(DateHelper.getDateString()));
     }
 
     @Override
