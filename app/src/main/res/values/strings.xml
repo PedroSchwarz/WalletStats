@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">WalletStats</string>
+    <string-array name="revenues_cats">
+        <item>Select the category</item>
+        <item>Company Salary</item>
+        <item>Freelancer Salary</item>
+    </string-array>
+    <string-array name="expenses_cats">
+        <item>Select the category</item>
+        <item>Shopping</item>
+        <item>Water</item>
+        <item>Internet</item>
+        <item>Electricity</item>
+    </string-array>
 </resources>
