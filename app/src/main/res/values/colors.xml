@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#512da8</color>
     <color name="colorAccent">#3d5afe</color>
 
-    <color name="colorExpenses">#FF5722</color>
+    <color name="colorExpenses">#ff5722</color>
     <color name="colorExpensesDark">#E64A19</color>
     <color name="colorExpensesAccent">#FF9800</color>
 
