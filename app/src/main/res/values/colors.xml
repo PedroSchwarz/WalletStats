@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#673ab7</color>
+    <color name="colorPrimaryDark">#512da8</color>
+    <color name="colorAccent">#3d5afe</color>
+
+    <color name="colorExpenses">#FF5722</color>
+    <color name="colorExpensesDark">#E64A19</color>
+    <color name="colorExpensesAccent">#FF9800</color>
+
+    <color name="colorRevenues">#4CAF50</color>
+    <color name="colorRevenuesDark">#388E3C</color>
+    <color name="colorRevenuesAccent">#8BC34A</color>
+</resources>

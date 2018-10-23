@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "175652114675",
+    "firebase_url": "https://walletstats-1d15f.firebaseio.com",
+    "project_id": "walletstats-1d15f",
+    "storage_bucket": "walletstats-1d15f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175652114675:android:4deb713c9d513d73",
+        "android_client_info": {
+          "package_name": "com.rodrigues.pedroschwarz.walletstats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175652114675-tlh2ldlb982nrc5f75ags0ku3p7o9mho.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rodrigues.pedroschwarz.walletstats",
+            "certificate_hash": "3a9681a5cd88f74ee6749f714508d90d910ccca3"
+          }
+        },
+        {
+          "client_id": "175652114675-jckldka4q5tonbcqonimm0ejmic17m18.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7GeIlIvgiyPVsbWmGRG9EWHhi45DIbOI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175652114675-jckldka4q5tonbcqonimm0ejmic17m18.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
