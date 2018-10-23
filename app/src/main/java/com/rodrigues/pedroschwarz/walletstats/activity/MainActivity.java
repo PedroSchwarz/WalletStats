@@ -29,6 +29,7 @@ import com.rodrigues.pedroschwarz.walletstats.adapter.TransactionAdapter;
 import com.rodrigues.pedroschwarz.walletstats.helper.DatabaseHelper;
 import com.rodrigues.pedroschwarz.walletstats.helper.DateHelper;
 import com.rodrigues.pedroschwarz.walletstats.model.Transaction;
+import com.rodrigues.pedroschwarz.walletstats.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mainName.setText("Pedro Schwarz");
-
         configRecycler();
         configCalendar();
     }
@@ -97,6 +96,22 @@ public class MainActivity extends AppCompatActivity {
                 updateUI();
             }
         });
+    }
+
+    private void getCurrentUser() {
+        DatabaseHelper.getUserRef().get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            User user = task.getResult().toObject(User.class);
+                            mainName.setText(user.getName());
+                            Double rAmount = user.getrAmount();
+                            Double eAmount = user.geteAmount();
+                            mainTAmount.setText(String.valueOf(rAmount - eAmount));
+                        }
+                    }
+                });
     }
 
     private void updateUI() {
@@ -143,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         getTransactions(DateHelper.getDateKey(DateHelper.getDateString()));
+        getCurrentUser();
     }
 
     @Override
