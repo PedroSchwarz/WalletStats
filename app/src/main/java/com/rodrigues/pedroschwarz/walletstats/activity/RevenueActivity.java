@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.rodrigues.pedroschwarz.walletstats.R;
 import com.rodrigues.pedroschwarz.walletstats.helper.DatabaseHelper;
 import com.rodrigues.pedroschwarz.walletstats.helper.DateHelper;
@@ -75,20 +76,48 @@ public class RevenueActivity extends AppCompatActivity {
         }
     }
 
-    private void createTransaction(String date, String desc, Double amount) {
+    private void createTransaction(String date, String desc, final Double amount) {
         DocumentReference transRef = DatabaseHelper.getTransactionRef(DateHelper.getDateKey(date)).document();
         Transaction transaction = new Transaction(transRef.getId(), desc, category, amount, date, "revenue");
         transRef.set(transaction).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    finish();
+                    addAmountToUser(amount);
                 } else {
                     rProg.setVisibility(View.GONE);
-                    Snackbar.make(rProg, "Something went wrong, try again later.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(rLayout, "Something went wrong, try again later.", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    private void addAmountToUser(final Double amount) {
+        DatabaseHelper.getUserRef().get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Double oldAmount = task.getResult().getDouble("rAmount");
+                            Double newAmount = amount + oldAmount;
+                            DatabaseHelper.getUserRef().update("rAmount", newAmount)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                finish();
+                                            } else {
+                                                rProg.setVisibility(View.GONE);
+                                                Snackbar.make(rLayout, "Something went wrong, try again later.", Snackbar.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                        } else {
+                            rProg.setVisibility(View.GONE);
+                            Snackbar.make(rLayout, "Something went wrong, try again later.", Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     private void setCurrentDate() {

@@ -19,5 +19,7 @@
         <item name="colorPrimaryDark">@color/colorRevenuesDark</item>
         <item name="colorAccent">@color/colorRevenuesAccent</item>
     </style>
+    <style name="AppTheme.ActionbarOverlay" parent="Base.ThemeOverlay.AppCompat.Dark" />
+    <style name="AppTheme.PopoverOverlay" parent="Base.ThemeOverlay.AppCompat.Light" />
 
 </resources>

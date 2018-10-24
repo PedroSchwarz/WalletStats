@@ -11,4 +11,8 @@ public class AuthHelper {
     public static String getUserId() {
         return getAuth().getCurrentUser().getUid();
     }
+
+    public static void signOutUser() {
+        getAuth().signOut();
+    }
 }

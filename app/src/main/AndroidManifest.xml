@@ -28,11 +28,13 @@
             android:name=".activity.RevenueActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Revenues" />
-        <activity android:name=".activity.MainActivity"
+        <activity
+            android:name=".activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RegisterActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".activity.GraphsActivity"></activity>
     </application>
 
 </manifest>
