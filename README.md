@@ -1,7 +1,7 @@
 # WalletStats
 App for controlling and managing personal money. Written in Java for Android. <br>
 Inspired by the financial app Organizze. <br>
-The app can be found at https://play.google.com/store/apps/details?id=com.organizze.android <br> 
+The Organizze app can be found at https://play.google.com/store/apps/details?id=com.organizze.android <br> 
 or at https://www.organizze.com.br
 
 <h2>DEPENDENCIES</h2>
